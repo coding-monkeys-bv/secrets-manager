@@ -1,0 +1,29 @@
+{
+    "name": "codingmonkeys/secrets-manager",
+    "description": "A Laravel package for fetching secrets from AWS Secrets Manager",
+    "require": {
+        "php": "^8.1",
+        "aws/aws-sdk-php-laravel": "^3.8",
+        "illuminate/support": "^10.18"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CodingMonkeys\\SecretsManager\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Coding Monkeys",
+            "email": "michael@codingmonkeys.nl"
+        }
+    ],
+    "minimum-stability": "stable",
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
