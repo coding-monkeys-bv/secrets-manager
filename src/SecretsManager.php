@@ -10,15 +10,20 @@ use Illuminate\Support\Facades\Cache;
 class SecretsManager
 {
     public $client;
+
     private $config;
+
     private $secrets;
+
     private $cacheRefreshed = false;
 
     public function __construct(array $config)
     {
         $this->config = $config;
 
-        $this->connect();
+        if (! Cache::has('aws-secrets')) {
+            $this->connect();
+        }
     }
 
     public function connect()
@@ -30,7 +35,7 @@ class SecretsManager
             ]);
 
             $result = $stsClient->assumeRole([
-                'RoleArn' => 'arn:aws:iam::' . $this->config['aws_account_id'] . ':role/' . $this->config['role'],
+                'RoleArn' => 'arn:aws:iam::'.$this->config['aws_account_id'].':role/'.$this->config['role'],
                 'RoleSessionName' => $this->config['role_session_name'],
             ]);
 
@@ -42,8 +47,8 @@ class SecretsManager
                 'credentials' => [
                     'key' => $credentials['AccessKeyId'],
                     'secret' => $credentials['SecretAccessKey'],
-                    'token' => $credentials['SessionToken']
-                ]
+                    'token' => $credentials['SessionToken'],
+                ],
             ]);
 
         } catch (AwsException $e) {
@@ -69,18 +74,13 @@ class SecretsManager
 
     public function updateDatabaseCredentials()
     {
-        // Return when cache is not refreshed.
-        if (!$this->cacheRefreshed) {
-            return;
-        }
-
         // Update database config.
         config([
-            'database.connections.mysql.host' => $this->secrets['host'],
-            'database.connections.mysql.port' => $this->secrets['port'],
-            'database.connections.mysql.database' => $this->secrets['dbname'],
-            'database.connections.mysql.username' => $this->secrets['username'],
-            'database.connections.mysql.password' => $this->secrets['password'],
+            'database.connections.'.$this->config['db_connection'].'.host' => $this->secrets['host'],
+            'database.connections.'.$this->config['db_connection'].'.port' => $this->secrets['port'],
+            'database.connections.'.$this->config['db_connection'].'.database' => $this->secrets['dbname'],
+            'database.connections.'.$this->config['db_connection'].'.username' => $this->secrets['username'],
+            'database.connections.'.$this->config['db_connection'].'.password' => $this->secrets['password'],
         ]);
 
         return $this;
