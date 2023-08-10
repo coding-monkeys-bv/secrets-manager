@@ -23,7 +23,6 @@ class SecretsManagerServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //SecretsManagerFacade::getSecrets()
-        //    ->updateDatabaseCredentials();
+        //
     }
 }
