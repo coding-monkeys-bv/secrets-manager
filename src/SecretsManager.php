@@ -76,6 +76,7 @@ class SecretsManager
     {
         // Update database config.
         config([
+            'database.connections.'.$this->config['db_connection'].'.driver' => $this->secrets['db_connection'],
             'database.connections.'.$this->config['db_connection'].'.host' => $this->secrets['host'],
             'database.connections.'.$this->config['db_connection'].'.port' => $this->secrets['port'],
             'database.connections.'.$this->config['db_connection'].'.database' => $this->secrets['dbname'],
