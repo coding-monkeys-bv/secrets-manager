@@ -34,5 +34,5 @@ In AppServiceProvider, paste this line in the boot method:
 
 ```php
 // Update database config.
-app('secrets-manager')->getSecrets()->updateDatabaseCredentials();
+app('secrets-manager')->getSecrets()->updateConfigFiles();
 ```
