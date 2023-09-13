@@ -72,8 +72,16 @@ class SecretsManager
         return $this;
     }
 
-    public function updateDatabaseCredentials()
+    public function updateConfigFiles()
     {
+        // Update app settings.
+        config([
+            'app.name' => $this->secrets['app_name'],
+            'app.key' => $this->secrets['app_key'],
+            'app.env' => $this->secrets['app_env'],
+            'app.debug' => (bool) $this->secrets['app_debug'],
+        ]);
+
         // Update database config.
         config([
             'database.connections.'.$this->config['db_connection'].'.driver' => $this->secrets['driver'],
@@ -82,6 +90,14 @@ class SecretsManager
             'database.connections.'.$this->config['db_connection'].'.database' => $this->secrets['dbname'],
             'database.connections.'.$this->config['db_connection'].'.username' => $this->secrets['username'],
             'database.connections.'.$this->config['db_connection'].'.password' => $this->secrets['password'],
+        ]);
+
+        // Update S3 config.
+        config([
+            'filesystems.disks.s3.key' => $this->secrets['aws_access_key_id'],
+            'filesystems.disks.s3.secret' => $this->secrets['aws_secret_access_key'],
+            'filesystems.disks.s3.region' => $this->secrets['aws_default_region'],
+            'filesystems.disks.s3.bucket' => $this->secrets['aws_bucket'],
         ]);
 
         return $this;
