@@ -33,6 +33,6 @@ Please note: SECRETS_MANAGER_CACHE_TIMEOUT is the number of minutes the secrets 
 In AppServiceProvider, paste this line in the boot method:
 
 ```php
-// Update database config.
-app('secrets-manager')->getSecrets()->updateConfigFiles();
+$secretsManager = app('secrets-manager')->getSecrets();
+$secrets = $secretsManager->secrets;
 ```
