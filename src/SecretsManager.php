@@ -79,6 +79,7 @@ class SecretsManager
             'app.name' => $this->secrets['app_name'],
             'app.key' => $this->secrets['app_key'],
             'app.env' => $this->secrets['app_env'],
+            'app.url' => $this->secrets['app_url'],
             'app.debug' => (bool) $this->secrets['app_debug'],
         ]);
 
